@@ -9,15 +9,17 @@
     ["rl", "强化学习"],
     ["infra", "数据与系统"],
     ["agent", "Agent"],
-    ["method", "方法与理论"]
+    ["method", "方法与理论"],
+    ["science", "科学智能"]
   ];
 
   const ERAS = [
+    { id: "roots", label: "1986-1996", title: "连接主义复兴", start: 1986, end: 1996, note: "反向传播等方法为现代深度学习重新点火。" },
     { id: "early", label: "1997-2009", title: "寒冬火种", start: 1997, end: 2009, note: "神经网络复兴前夜的关键铺垫。" },
-    { id: "deep", label: "2010-2014", title: "深度学习爆发", start: 2010, end: 2014, note: "视觉、词向量、生成模型同时推进。" },
+    { id: "deep", label: "2010-2014", title: "深度学习爆发", start: 2010, end: 2014, note: "视觉、词向量、生成模型和训练技巧同时推进。" },
     { id: "transformer", label: "2015-2019", title: "架构革命", start: 2015, end: 2019, note: "残差、注意力、预训练与强化学习形成主线。" },
-    { id: "foundation", label: "2020-2022", title: "基础模型成型", start: 2020, end: 2022, note: "规模化、多模态和对齐方法走向成熟。" },
-    { id: "open", label: "2023-2025", title: "开源与推理", start: 2023, end: 2025, note: "开放模型、MoE、长上下文与推理训练加速。" }
+    { id: "foundation", label: "2020-2022", title: "基础模型成型", start: 2020, end: 2022, note: "规模化、多模态、扩散、科学智能和对齐方法走向成熟。" },
+    { id: "open", label: "2023-2025", title: "开源与推理", start: 2023, end: 2025, note: "开放模型、MoE、长上下文、多模态助手与推理训练加速。" }
   ];
 
   const state = {
@@ -29,7 +31,7 @@
     .map((paper, index) => ({
       ...paper,
       id: `${paper.year}-${slugify(paper.title_en || paper["title_中文"] || "paper")}-${index}`,
-      category: categorize(paper)
+      category: paper.category || categorize(paper)
     }))
     .sort((a, b) => a.year - b.year || String(a.title_en).localeCompare(String(b.title_en)));
 
@@ -291,12 +293,13 @@
   function categorize(paper) {
     const text = normalize(`${paper["title_中文"]} ${paper.title_en} ${paper.problem} ${paper.solution} ${paper.achievements}`);
 
+    if (containsAny(text, ["alphafold", "protein", "蛋白", "科学智能", "ai for science"])) return "science";
     if (containsAny(text, ["toolformer", "hugginggpt", "jarvis", "react", "agent", "工具使用", "行动"])) return "agent";
-    if (containsAny(text, ["dqn", "ppo", "alphago", "reinforcement", "rlhf", "强化学习", "策略"])) return "rl";
-    if (containsAny(text, ["clip", "dall-e", "flamingo", "blip", "multimodal", "图文", "视觉语言", "多模态"])) return "multimodal";
-    if (containsAny(text, ["lenet", "cnn", "vgg", "resnet", "yolo", "efficientnet", "stylegan", "gan", "diffusion", "ddpm", "vit", "u-net", "dit", "stable diffusion", "卷积", "图像", "生成"])) return "vision";
-    if (containsAny(text, ["brook", "zero", "scaling", "laion", "refinedweb", "megascale", "flashattention", "lora", "mamba", "moe", "switch transformer", "数据", "训练", "系统", "稀疏"])) return "infra";
-    if (containsAny(text, ["bitter lesson", "distillation", "attention", "cot", "seq2seq", "知识蒸馏", "思维链", "注意力"])) return "method";
+    if (containsAny(text, ["dqn", "ppo", "alphago", "reinforcement", "rlhf", "rlaif", "强化学习", "策略"])) return "rl";
+    if (containsAny(text, ["clip", "dall-e", "flamingo", "blip", "llava", "gpt-4", "visual instruction", "multimodal", "图文", "视觉语言", "多模态"])) return "multimodal";
+    if (containsAny(text, ["alexnet", "lenet", "cnn", "r-cnn", "mask r-cnn", "faster r-cnn", "sam", "segment anything", "detr", "nerf", "vit", "vision transformer", "vgg", "resnet", "yolo", "efficientnet", "stylegan", "gan", "vae", "diffusion", "ddpm", "u-net", "stable diffusion", "卷积", "图像", "视觉", "检测", "分割", "生成"])) return "vision";
+    if (containsAny(text, ["chinchilla", "qlora", "brook", "zero", "scaling", "compute-optimal", "laion", "refinedweb", "megascale", "flashattention", "lora", "mamba", "moe", "switch transformer", "数据", "训练", "系统", "量化", "稀疏"])) return "infra";
+    if (containsAny(text, ["back-propagating", "backprop", "dropout", "adam", "batch normalization", "gcn", "graph convolution", "scaling laws", "constitutional", "dpo", "direct preference", "bitter lesson", "distillation", "attention", "cot", "seq2seq", "反向传播", "随机失活", "优化器", "归一化", "图卷积", "偏好优化", "宪法式", "知识蒸馏", "思维链", "注意力"])) return "method";
     return "language";
   }
 
