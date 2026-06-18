@@ -22,16 +22,33 @@
       </div>
     </header>
 
-    <section class="control-deck" aria-label="论文筛选">
-      <div class="metric-row" id="metricRow"></div>
-      <div class="search-row">
-        <label class="search-field" for="searchInput">
-          <span>搜索</span>
-          <input id="searchInput" type="search" autocomplete="off" placeholder="论文、作者、方法或年份">
-        </label>
+    <section class="control-deck" aria-label="论文浏览与筛选">
+      <div class="control-header">
+        <div>
+          <p class="control-eyebrow">论文索引</p>
+          <h2 class="control-title">浏览与筛选</h2>
+        </div>
+        <p class="control-copy">按关键词、技术主题或发展阶段快速定位关键论文。</p>
       </div>
-      <div class="filter-row" id="filterRow" aria-label="按领域筛选"></div>
-      <nav class="era-nav" id="eraNav" aria-label="年代导航"></nav>
+      <div class="control-grid">
+        <div class="metric-row" id="metricRow"></div>
+        <div class="control-main">
+          <div class="search-row">
+            <label class="search-field" for="searchInput">
+              <span>关键词</span>
+              <input id="searchInput" type="search" autocomplete="off" placeholder="搜索论文、作者、方法或年份">
+            </label>
+          </div>
+          <div class="control-panel">
+            <p class="section-label">技术主题</p>
+            <div class="filter-row" id="filterRow" aria-label="按领域筛选"></div>
+          </div>
+          <div class="control-panel control-panel-eras">
+            <p class="section-label">发展阶段</p>
+            <nav class="era-nav" id="eraNav" aria-label="年代导航"></nav>
+          </div>
+        </div>
+      </div>
     </section>
 
     <section class="workspace" id="timelineView" aria-label="论文时间线工作区">

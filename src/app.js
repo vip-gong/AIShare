@@ -2,7 +2,7 @@
   const rawPapers = Array.isArray(window.__AI_PAPERS__) ? window.__AI_PAPERS__ : [];
 
   const CATEGORIES = [
-    ["all", "全部"],
+    ["all", "全部论文"],
     ["language", "语言模型"],
     ["vision", "视觉与生成"],
     ["multimodal", "多模态"],
@@ -158,17 +158,22 @@
     const latest = papers[papers.length - 1];
     const categoryCount = new Set(papers.map((paper) => paper.category)).size;
     const metrics = [
-      { value: papers.length, label: "论文条目" },
-      { value: `${Math.min(...years)}-${Math.max(...years)}`, label: "时间跨度" },
-      { value: categoryCount, label: "技术主题" },
-      { value: latest ? latest["title_中文"].split("：")[0] : "-", label: "最新节点" }
+      { value: papers.length, label: "论文总数", hint: "已收录" },
+      { value: `${Math.min(...years)}-${Math.max(...years)}`, label: "覆盖年份", hint: "技术脉络" },
+      { value: categoryCount, label: "技术主题", hint: "可筛选" },
+      { value: latest ? latest["title_中文"].split("：")[0] : "-", label: "最新论文", hint: "更新至" }
     ];
 
     els.metrics.innerHTML = metrics
-      .map((metric) => `<div class="metric"><strong>${escapeHtml(metric.value)}</strong><span>${escapeHtml(metric.label)}</span></div>`)
+      .map((metric) => `
+        <div class="metric">
+          <span class="metric-label">${escapeHtml(metric.label)}</span>
+          <strong>${escapeHtml(metric.value)}</strong>
+          <span class="metric-hint">${escapeHtml(metric.hint)}</span>
+        </div>
+      `)
       .join("");
   }
-
   function renderFilters() {
     const counts = papers.reduce((acc, paper) => {
       acc[paper.category] = (acc[paper.category] || 0) + 1;
@@ -179,22 +184,31 @@
       .filter(([key]) => key === "all" || counts[key])
       .map(([key, label]) => {
         const active = key === state.category ? " active" : "";
-        return `<button class="filter-button${active}" type="button" data-category="${key}">${escapeHtml(label)} ${counts[key] || 0}</button>`;
+        return `
+          <button class="filter-button${active}" type="button" data-category="${key}">
+            <span>${escapeHtml(label)}</span>
+            <span class="filter-count">${counts[key] || 0}</span>
+          </button>
+        `;
       })
       .join("");
   }
-
   function renderEraNav(scope = papers) {
     const visibleEraIds = new Set(scope.map((paper) => getEra(paper)?.id).filter(Boolean));
     els.eraNav.innerHTML = ERAS
       .filter((era) => visibleEraIds.has(era.id))
       .map((era) => {
         const count = scope.filter((paper) => getEra(paper)?.id === era.id).length;
-        return `<button class="era-link" type="button" data-era="era-${era.id}"><strong>${era.title}</strong><span>${era.label} · ${count} 篇</span></button>`;
+        return `
+          <button class="era-link" type="button" data-era="era-${era.id}">
+            <span class="era-label">${escapeHtml(era.label)}</span>
+            <strong>${escapeHtml(era.title)}</strong>
+            <span class="era-meta">${count} 篇论文</span>
+          </button>
+        `;
       })
       .join("");
   }
-
   function renderTimeline(filtered) {
     if (filtered.length === 0) {
       els.timeline.innerHTML = `<div class="empty-state">没有匹配的论文。换一个关键词或筛选条件再试。</div>`;
