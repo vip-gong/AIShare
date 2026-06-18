@@ -1,4 +1,4 @@
-﻿# AIshare
+# AIshare
 
 AIshare 是一个“AI 演义”论文科普可视化项目，用单页时间轴展示 47 篇 AI 里程碑论文。
 
