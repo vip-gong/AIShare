@@ -1,0 +1,12 @@
+{
+  "name": "aishare",
+  "version": "1.0.0",
+  "private": true,
+  "description": "AI演义论文时间线静态站点",
+  "scripts": {
+    "validate": "node scripts/validate.js",
+    "build": "node scripts/build.js",
+    "smoke": "node scripts/smoke.js",
+    "check": "node scripts/validate.js && node scripts/build.js && node scripts/smoke.js"
+  }
+}

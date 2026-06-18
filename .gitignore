@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.tmp/
+*.log
+.claude/
+docs/superpowers/
+import-payload/
+lark-auth-*.png
+scripts/prepare-lark-import.js
+assets/

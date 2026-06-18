@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI演义：论文时间线</title>
+  <meta name="description" content="用可检索时间线梳理 AI 领域里程碑论文。">
+  <style>
+/* __CSS__ */
+  </style>
+</head>
+<body>
+  <main class="app-shell">
+    <header class="masthead">
+      <div class="brand">
+        <div>
+          <h1>
+            <span class="title-main">AI演义</span>
+            <span class="title-subtitle">从 LSTM 到 DeepSeek-R1，梳理 AI 关键论文的技术脉络。</span>
+          </h1>
+        </div>
+      </div>
+    </header>
+
+    <section class="control-deck" aria-label="论文筛选">
+      <div class="metric-row" id="metricRow"></div>
+      <div class="search-row">
+        <label class="search-field" for="searchInput">
+          <span>搜索</span>
+          <input id="searchInput" type="search" autocomplete="off" placeholder="论文、作者、方法或年份">
+        </label>
+      </div>
+      <div class="filter-row" id="filterRow" aria-label="按领域筛选"></div>
+      <nav class="era-nav" id="eraNav" aria-label="年代导航"></nav>
+    </section>
+
+    <section class="workspace" id="timelineView" aria-label="论文时间线工作区">
+      <section class="timeline" id="timeline" aria-live="polite"></section>
+    </section>
+
+    <section class="paper-page" id="paperPage" aria-live="polite" hidden></section>
+  </main>
+
+  <script>
+    window.__AI_PAPERS__ = __PAPERS_JSON__;
+  </script>
+  <script>
+/* __APP_JS__ */
+  </script>
+</body>
+</html>
