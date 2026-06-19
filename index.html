@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>AI演义：论文时间线</title>
+  <title>AGI之路：论文时间线</title>
   <meta name="description" content="用可检索时间线梳理 AI 领域里程碑论文。">
   <style>
 :root {
@@ -52,7 +52,8 @@ body {
 }
 
 button,
-input {
+input,
+select {
   font: inherit;
 }
 
@@ -120,77 +121,13 @@ h1 {
   backdrop-filter: blur(16px);
 }
 
-.control-header {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 24px;
-  margin-bottom: 14px;
-}
-
-.control-eyebrow {
-  color: var(--teal);
-  font-size: 0.75rem;
-  font-weight: 720;
-  line-height: 1.2;
-}
-
-.control-title {
-  margin-top: 3px;
-  font-size: 1rem;
-  font-weight: 720;
-  line-height: 1.25;
-}
-
-.control-copy {
-  max-width: 28rem;
-  color: var(--quiet);
-  font-size: 0.86rem;
-  line-height: 1.5;
-}
-
 .control-grid {
   display: grid;
-  grid-template-columns: minmax(220px, 280px) minmax(0, 1fr);
+  grid-template-columns: 1fr;
   gap: 14px;
   align-items: start;
 }
 
-.metric-row {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 8px;
-}
-
-.metric {
-  min-width: 0;
-  padding: 11px 14px;
-  border: 1px solid var(--line-soft);
-  border-left: 3px solid rgba(54, 194, 172, 0.72);
-  border-radius: var(--radius);
-  background: rgba(27, 36, 33, 0.54);
-}
-
-.metric-label,
-.metric-hint {
-  display: block;
-  color: var(--quiet);
-  font-size: 0.75rem;
-  line-height: 1.25;
-}
-
-.metric strong {
-  display: block;
-  margin-top: 4px;
-  font-size: 1.24rem;
-  line-height: 1.15;
-  overflow-wrap: anywhere;
-}
-
-.metric-hint {
-  margin-top: 4px;
-  color: var(--muted);
-}
 
 .control-main {
   display: grid;
@@ -199,10 +136,14 @@ h1 {
 }
 
 .search-row {
-  display: block;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(170px, 240px);
+  gap: 10px;
+  align-items: stretch;
 }
 
-.search-field {
+.search-field,
+.category-select-field {
   display: grid;
   grid-template-columns: minmax(76px, auto) 1fr;
   align-items: center;
@@ -214,7 +155,8 @@ h1 {
   overflow: hidden;
 }
 
-.search-field span {
+.search-field span,
+.category-select-field span {
   height: 100%;
   display: inline-flex;
   align-items: center;
@@ -225,201 +167,44 @@ h1 {
   font-weight: 650;
 }
 
-.search-field input {
+.search-field input,
+.category-select-field select {
   width: 100%;
   min-width: 0;
   height: 48px;
   border: 0;
   color: var(--text);
-  background: transparent;
+  background-color: transparent;
   outline: none;
   padding: 0 14px;
+}
+
+.category-select-field select {
+  appearance: none;
+  cursor: pointer;
+  padding-right: 34px;
+  background-image: linear-gradient(45deg, transparent 50%, var(--muted) 50%), linear-gradient(135deg, var(--muted) 50%, transparent 50%);
+  background-position: calc(100% - 18px) 21px, calc(100% - 12px) 21px;
+  background-size: 6px 6px, 6px 6px;
+  background-repeat: no-repeat;
+}
+
+.category-select-field select option {
+  color: var(--text);
+  background: #121916;
 }
 
 .search-field input::placeholder {
   color: var(--quiet);
 }
 
-.search-field:focus-within {
+.search-field:focus-within,
+.category-select-field:focus-within {
   border-color: var(--teal);
   box-shadow: 0 0 0 3px rgba(54, 194, 172, 0.14);
 }
 
-.control-panel {
-  display: grid;
-  grid-template-columns: 88px minmax(0, 1fr);
-  gap: 12px;
-  align-items: start;
-  padding: 12px;
-  border: 1px solid var(--line-soft);
-  border-radius: var(--radius);
-  background: rgba(27, 36, 33, 0.42);
-}
 
-.section-label {
-  padding-top: 7px;
-  color: var(--muted);
-  font-size: 0.8rem;
-  font-weight: 720;
-  line-height: 1.25;
-}
-
-.filter-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  min-width: 0;
-}
-
-.filter-button {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  min-height: 34px;
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  background: rgba(16, 20, 18, 0.24);
-  color: var(--muted);
-  cursor: pointer;
-  padding: 6px 8px 6px 11px;
-}
-
-.filter-count {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 22px;
-  height: 22px;
-  border-radius: 999px;
-  background: rgba(116, 135, 128, 0.16);
-  color: var(--quiet);
-  font-size: 0.72rem;
-}
-
-.filter-button:hover,
-.filter-button:focus-visible {
-  border-color: var(--teal);
-  color: var(--text);
-  outline: none;
-}
-
-.filter-button.active {
-  color: #071312;
-  border-color: var(--teal);
-  background: var(--teal);
-}
-
-.filter-button.active .filter-count {
-  color: #071312;
-  background: rgba(7, 19, 18, 0.18);
-}
-
-.era-nav {
-  display: grid;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
-  gap: 6px;
-  min-width: 0;
-}
-
-.era-link {
-  width: 100%;
-  min-height: 66px;
-  border: 1px solid var(--line-soft);
-  border-top: 2px solid rgba(54, 194, 172, 0.56);
-  border-radius: 8px;
-  background: rgba(16, 20, 18, 0.28);
-  color: var(--muted);
-  text-align: left;
-  cursor: pointer;
-  padding: 9px 10px;
-}
-
-.era-label {
-  display: block;
-  color: var(--quiet);
-  font-size: 0.72rem;
-  line-height: 1.2;
-}
-
-.era-link strong {
-  display: block;
-  margin-top: 5px;
-  color: var(--text);
-  font-size: 0.86rem;
-  font-weight: 680;
-  line-height: 1.25;
-}
-
-.era-meta {
-  display: block;
-  margin-top: 4px;
-  color: var(--muted);
-  font-size: 0.74rem;
-  line-height: 1.2;
-}
-
-.era-link:hover,
-.era-link:focus-visible {
-  border-color: rgba(54, 194, 172, 0.78);
-  border-top-color: var(--teal);
-  background: rgba(54, 194, 172, 0.1);
-  outline: none;
-}
-
-.era-link.active {
-  border-color: rgba(240, 184, 77, 0.72);
-  border-top-color: var(--amber);
-  background: rgba(240, 184, 77, 0.11);
-}
-.workspace {
-  margin-top: 18px;
-}
-
-.era-nav {
-  display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 8px;
-  margin-top: 12px;
-  padding-top: 12px;
-  border-top: 1px solid var(--line-soft);
-}
-
-.era-link {
-  width: 100%;
-  min-height: 58px;
-  border: 1px solid var(--line-soft);
-  border-radius: 8px;
-  background: rgba(27, 36, 33, 0.58);
-  color: var(--muted);
-  text-align: left;
-  cursor: pointer;
-  padding: 9px 10px;
-}
-
-.era-link strong {
-  display: block;
-  color: var(--text);
-  font-size: 0.92rem;
-  font-weight: 660;
-}
-
-.era-link span {
-  display: block;
-  color: var(--quiet);
-  font-size: 0.78rem;
-}
-
-.era-link:hover,
-.era-link:focus-visible {
-  border-color: var(--teal);
-  background: rgba(54, 194, 172, 0.1);
-  outline: none;
-}
-
-.era-link.active {
-  border-color: rgba(240, 184, 77, 0.72);
-  background: rgba(240, 184, 77, 0.11);
-}
 
 .timeline {
   min-width: 0;
@@ -724,14 +509,6 @@ h1 {
     grid-template-columns: 1fr;
   }
 
-  .metric-row {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
-
-  .era-nav {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-
   .paper-summary {
     grid-template-columns: 1fr;
   }
@@ -770,44 +547,9 @@ h1 {
     padding: 12px 0 14px;
   }
 
-  .control-header {
-    display: grid;
-    gap: 6px;
-    margin-bottom: 10px;
-  }
 
-  .control-copy {
-    max-width: none;
-  }
-
-  .metric-row {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .control-panel {
+  .search-row {
     grid-template-columns: 1fr;
-    gap: 8px;
-    padding: 10px;
-  }
-
-  .section-label {
-    padding-top: 0;
-  }
-
-  .era-nav {
-    display: flex;
-    gap: 8px;
-    overflow-x: auto;
-    padding-bottom: 2px;
-    scrollbar-width: none;
-  }
-
-  .era-nav::-webkit-scrollbar {
-    display: none;
-  }
-
-  .era-link {
-    min-width: 148px;
   }
 
   .era-section {
@@ -828,21 +570,21 @@ h1 {
 }
 
 @media (max-width: 420px) {
-  .metric-row {
+
+  .search-field,
+.category-select-field {
     grid-template-columns: 1fr;
   }
 
-  .search-field {
-    grid-template-columns: 1fr;
-  }
-
-  .search-field span {
+  .search-field span,
+.category-select-field span {
     min-height: 34px;
     border-right: 0;
     border-bottom: 1px solid var(--line-soft);
   }
 
-  .search-field input {
+  .search-field input,
+.category-select-field select {
     height: 44px;
   }
 
@@ -862,37 +604,25 @@ h1 {
       <div class="brand">
         <div>
           <h1>
-            <span class="title-main">AI演义</span>
-            <span class="title-subtitle">从 LSTM 到 DeepSeek-R1，梳理 AI 关键论文的技术脉络。</span>
+            <span class="title-main">AGI之路</span>
+            <span class="title-subtitle">重读经典，重走AGI的每一个脚印</span>
           </h1>
         </div>
       </div>
     </header>
 
-    <section class="control-deck" aria-label="论文浏览与筛选">
-      <div class="control-header">
-        <div>
-          <p class="control-eyebrow">论文索引</p>
-          <h2 class="control-title">浏览与筛选</h2>
-        </div>
-        <p class="control-copy">按关键词、技术主题或发展阶段快速定位关键论文。</p>
-      </div>
+    <section class="control-deck" aria-label="论文筛选控制">
       <div class="control-grid">
-        <div class="metric-row" id="metricRow"></div>
         <div class="control-main">
           <div class="search-row">
             <label class="search-field" for="searchInput">
               <span>关键词</span>
               <input id="searchInput" type="search" autocomplete="off" placeholder="搜索论文、作者、方法或年份">
             </label>
-          </div>
-          <div class="control-panel">
-            <p class="section-label">技术主题</p>
-            <div class="filter-row" id="filterRow" aria-label="按领域筛选"></div>
-          </div>
-          <div class="control-panel control-panel-eras">
-            <p class="section-label">发展阶段</p>
-            <nav class="era-nav" id="eraNav" aria-label="年代导航"></nav>
+            <label class="category-select-field" for="categorySelect">
+              <span>技术主题</span>
+              <select id="categorySelect" aria-label="按技术主题筛选"></select>
+            </label>
           </div>
         </div>
       </div>
@@ -950,17 +680,14 @@ h1 {
     controls: document.querySelector(".control-deck"),
     timelineView: document.getElementById("timelineView"),
     paperPage: document.getElementById("paperPage"),
-    metrics: document.getElementById("metricRow"),
     search: document.getElementById("searchInput"),
-    filters: document.getElementById("filterRow"),
-    eraNav: document.getElementById("eraNav"),
+    categorySelect: document.getElementById("categorySelect"),
     timeline: document.getElementById("timeline")
   };
 
   init();
 
   function init() {
-    renderMetrics();
     renderFilters();
     renderListPage();
     bindEvents();
@@ -977,22 +704,13 @@ h1 {
       renderListPage();
     });
 
-    els.filters.addEventListener("click", (event) => {
-      const button = event.target.closest("[data-category]");
-      if (!button) return;
-      state.category = button.dataset.category;
-      renderFilters();
+    els.categorySelect.addEventListener("change", (event) => {
+      state.category = event.target.value;
       if (getPaperFromHash()) {
         window.location.hash = "";
         return;
       }
       renderListPage();
-    });
-
-    els.eraNav.addEventListener("click", (event) => {
-      const button = event.target.closest("[data-era]");
-      if (!button) return;
-      document.getElementById(button.dataset.era)?.scrollIntoView({ behavior: "smooth", block: "start" });
     });
 
     els.timeline.addEventListener("click", (event) => {
@@ -1021,7 +739,6 @@ h1 {
     els.controls.hidden = false;
     els.timelineView.hidden = false;
     els.paperPage.hidden = true;
-    renderEraNav(filtered);
     renderTimeline(filtered);
   }
 
@@ -1064,62 +781,21 @@ h1 {
     `;
   }
 
-  function renderMetrics() {
-    const years = papers.map((paper) => paper.year);
-    const latest = papers[papers.length - 1];
-    const categoryCount = new Set(papers.map((paper) => paper.category)).size;
-    const metrics = [
-      { value: papers.length, label: "论文总数", hint: "已收录" },
-      { value: `${Math.min(...years)}-${Math.max(...years)}`, label: "覆盖年份", hint: "技术脉络" },
-      { value: categoryCount, label: "技术主题", hint: "可筛选" },
-      { value: latest ? latest["title_中文"].split("：")[0] : "-", label: "最新论文", hint: "更新至" }
-    ];
-
-    els.metrics.innerHTML = metrics
-      .map((metric) => `
-        <div class="metric">
-          <span class="metric-label">${escapeHtml(metric.label)}</span>
-          <strong>${escapeHtml(metric.value)}</strong>
-          <span class="metric-hint">${escapeHtml(metric.hint)}</span>
-        </div>
-      `)
-      .join("");
-  }
   function renderFilters() {
     const counts = papers.reduce((acc, paper) => {
       acc[paper.category] = (acc[paper.category] || 0) + 1;
       return acc;
     }, { all: papers.length });
 
-    els.filters.innerHTML = CATEGORIES
+    els.categorySelect.innerHTML = CATEGORIES
       .filter(([key]) => key === "all" || counts[key])
       .map(([key, label]) => {
-        const active = key === state.category ? " active" : "";
-        return `
-          <button class="filter-button${active}" type="button" data-category="${key}">
-            <span>${escapeHtml(label)}</span>
-            <span class="filter-count">${counts[key] || 0}</span>
-          </button>
-        `;
+        const selected = key === state.category ? " selected" : "";
+        return `<option value="${escapeAttribute(key)}"${selected}>${escapeHtml(label)} ${counts[key] || 0}</option>`;
       })
       .join("");
   }
-  function renderEraNav(scope = papers) {
-    const visibleEraIds = new Set(scope.map((paper) => getEra(paper)?.id).filter(Boolean));
-    els.eraNav.innerHTML = ERAS
-      .filter((era) => visibleEraIds.has(era.id))
-      .map((era) => {
-        const count = scope.filter((paper) => getEra(paper)?.id === era.id).length;
-        return `
-          <button class="era-link" type="button" data-era="era-${era.id}">
-            <span class="era-label">${escapeHtml(era.label)}</span>
-            <strong>${escapeHtml(era.title)}</strong>
-            <span class="era-meta">${count} 篇论文</span>
-          </button>
-        `;
-      })
-      .join("");
-  }
+
   function renderTimeline(filtered) {
     if (filtered.length === 0) {
       els.timeline.innerHTML = `<div class="empty-state">没有匹配的论文。换一个关键词或筛选条件再试。</div>`;

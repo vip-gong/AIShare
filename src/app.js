@@ -39,17 +39,14 @@
     controls: document.querySelector(".control-deck"),
     timelineView: document.getElementById("timelineView"),
     paperPage: document.getElementById("paperPage"),
-    metrics: document.getElementById("metricRow"),
     search: document.getElementById("searchInput"),
-    filters: document.getElementById("filterRow"),
-    eraNav: document.getElementById("eraNav"),
+    categorySelect: document.getElementById("categorySelect"),
     timeline: document.getElementById("timeline")
   };
 
   init();
 
   function init() {
-    renderMetrics();
     renderFilters();
     renderListPage();
     bindEvents();
@@ -66,22 +63,13 @@
       renderListPage();
     });
 
-    els.filters.addEventListener("click", (event) => {
-      const button = event.target.closest("[data-category]");
-      if (!button) return;
-      state.category = button.dataset.category;
-      renderFilters();
+    els.categorySelect.addEventListener("change", (event) => {
+      state.category = event.target.value;
       if (getPaperFromHash()) {
         window.location.hash = "";
         return;
       }
       renderListPage();
-    });
-
-    els.eraNav.addEventListener("click", (event) => {
-      const button = event.target.closest("[data-era]");
-      if (!button) return;
-      document.getElementById(button.dataset.era)?.scrollIntoView({ behavior: "smooth", block: "start" });
     });
 
     els.timeline.addEventListener("click", (event) => {
@@ -110,7 +98,6 @@
     els.controls.hidden = false;
     els.timelineView.hidden = false;
     els.paperPage.hidden = true;
-    renderEraNav(filtered);
     renderTimeline(filtered);
   }
 
@@ -153,62 +140,21 @@
     `;
   }
 
-  function renderMetrics() {
-    const years = papers.map((paper) => paper.year);
-    const latest = papers[papers.length - 1];
-    const categoryCount = new Set(papers.map((paper) => paper.category)).size;
-    const metrics = [
-      { value: papers.length, label: "论文总数", hint: "已收录" },
-      { value: `${Math.min(...years)}-${Math.max(...years)}`, label: "覆盖年份", hint: "技术脉络" },
-      { value: categoryCount, label: "技术主题", hint: "可筛选" },
-      { value: latest ? latest["title_中文"].split("：")[0] : "-", label: "最新论文", hint: "更新至" }
-    ];
-
-    els.metrics.innerHTML = metrics
-      .map((metric) => `
-        <div class="metric">
-          <span class="metric-label">${escapeHtml(metric.label)}</span>
-          <strong>${escapeHtml(metric.value)}</strong>
-          <span class="metric-hint">${escapeHtml(metric.hint)}</span>
-        </div>
-      `)
-      .join("");
-  }
   function renderFilters() {
     const counts = papers.reduce((acc, paper) => {
       acc[paper.category] = (acc[paper.category] || 0) + 1;
       return acc;
     }, { all: papers.length });
 
-    els.filters.innerHTML = CATEGORIES
+    els.categorySelect.innerHTML = CATEGORIES
       .filter(([key]) => key === "all" || counts[key])
       .map(([key, label]) => {
-        const active = key === state.category ? " active" : "";
-        return `
-          <button class="filter-button${active}" type="button" data-category="${key}">
-            <span>${escapeHtml(label)}</span>
-            <span class="filter-count">${counts[key] || 0}</span>
-          </button>
-        `;
+        const selected = key === state.category ? " selected" : "";
+        return `<option value="${escapeAttribute(key)}"${selected}>${escapeHtml(label)} ${counts[key] || 0}</option>`;
       })
       .join("");
   }
-  function renderEraNav(scope = papers) {
-    const visibleEraIds = new Set(scope.map((paper) => getEra(paper)?.id).filter(Boolean));
-    els.eraNav.innerHTML = ERAS
-      .filter((era) => visibleEraIds.has(era.id))
-      .map((era) => {
-        const count = scope.filter((paper) => getEra(paper)?.id === era.id).length;
-        return `
-          <button class="era-link" type="button" data-era="era-${era.id}">
-            <span class="era-label">${escapeHtml(era.label)}</span>
-            <strong>${escapeHtml(era.title)}</strong>
-            <span class="era-meta">${count} 篇论文</span>
-          </button>
-        `;
-      })
-      .join("");
-  }
+
   function renderTimeline(filtered) {
     if (filtered.length === 0) {
       els.timeline.innerHTML = `<div class="empty-state">没有匹配的论文。换一个关键词或筛选条件再试。</div>`;

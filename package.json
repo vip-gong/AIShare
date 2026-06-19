@@ -2,7 +2,7 @@
   "name": "aishare",
   "version": "1.0.0",
   "private": true,
-  "description": "AI演义论文时间线静态站点",
+  "description": "AGI之路论文时间线静态站点",
   "scripts": {
     "validate": "node scripts/validate.js",
     "build": "node scripts/build.js",

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>AI演义：论文时间线</title>
+  <title>AGI之路：论文时间线</title>
   <meta name="description" content="用可检索时间线梳理 AI 领域里程碑论文。">
   <style>
 /* __CSS__ */
@@ -15,37 +15,25 @@
       <div class="brand">
         <div>
           <h1>
-            <span class="title-main">AI演义</span>
-            <span class="title-subtitle">从 LSTM 到 DeepSeek-R1，梳理 AI 关键论文的技术脉络。</span>
+            <span class="title-main">AGI之路</span>
+            <span class="title-subtitle">重读经典，重走AGI的每一个脚印</span>
           </h1>
         </div>
       </div>
     </header>
 
-    <section class="control-deck" aria-label="论文浏览与筛选">
-      <div class="control-header">
-        <div>
-          <p class="control-eyebrow">论文索引</p>
-          <h2 class="control-title">浏览与筛选</h2>
-        </div>
-        <p class="control-copy">按关键词、技术主题或发展阶段快速定位关键论文。</p>
-      </div>
+    <section class="control-deck" aria-label="论文筛选控制">
       <div class="control-grid">
-        <div class="metric-row" id="metricRow"></div>
         <div class="control-main">
           <div class="search-row">
             <label class="search-field" for="searchInput">
               <span>关键词</span>
               <input id="searchInput" type="search" autocomplete="off" placeholder="搜索论文、作者、方法或年份">
             </label>
-          </div>
-          <div class="control-panel">
-            <p class="section-label">技术主题</p>
-            <div class="filter-row" id="filterRow" aria-label="按领域筛选"></div>
-          </div>
-          <div class="control-panel control-panel-eras">
-            <p class="section-label">发展阶段</p>
-            <nav class="era-nav" id="eraNav" aria-label="年代导航"></nav>
+            <label class="category-select-field" for="categorySelect">
+              <span>技术主题</span>
+              <select id="categorySelect" aria-label="按技术主题筛选"></select>
+            </label>
           </div>
         </div>
       </div>
