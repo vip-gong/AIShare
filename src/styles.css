@@ -91,8 +91,11 @@ h1 {
 }
 
 .title-main {
+  max-width: 100%;
   font-size: 2.4rem;
   font-weight: 760;
+  line-height: 1.14;
+  overflow-wrap: anywhere;
 }
 
 .title-subtitle {
@@ -206,11 +209,18 @@ h1 {
   display: grid;
   grid-template-columns: 150px minmax(0, 1fr);
   gap: 18px;
+  align-items: start;
   margin-bottom: 24px;
 }
 
 .era-heading {
-  padding-top: 2px;
+  position: sticky;
+  top: 88px;
+  z-index: 3;
+  align-self: start;
+  padding: 8px 0 10px;
+  background: linear-gradient(180deg, rgba(16, 20, 18, 0.98), rgba(16, 20, 18, 0.84));
+  backdrop-filter: blur(10px);
 }
 
 .era-heading h2 {
@@ -619,7 +629,11 @@ h1 {
   }
 
   .era-heading {
+    position: static;
     margin-bottom: 10px;
+    padding: 0;
+    background: transparent;
+    backdrop-filter: none;
   }
 
   .paper-card {
