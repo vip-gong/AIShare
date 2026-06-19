@@ -464,6 +464,74 @@ h1 {
   font-size: 0.92rem;
 }
 
+.reader-guide {
+  display: grid;
+  gap: 20px;
+  padding: 22px 0 6px;
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.reader-guide-lead {
+  max-width: 980px;
+}
+
+.guide-label,
+.detail-section-heading p {
+  color: var(--amber);
+  font-size: 0.78rem;
+  font-weight: 760;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.reader-guide h3,
+.detail-section-heading h3 {
+  margin: 5px 0 0;
+  color: var(--text);
+  font-size: 1.15rem;
+  line-height: 1.35;
+}
+
+.reader-guide-lead p:last-child {
+  margin-top: 10px;
+  color: var(--muted);
+}
+
+.guide-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 24px;
+  border-top: 1px solid var(--line-soft);
+}
+
+.guide-block {
+  min-width: 0;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.guide-block h4 {
+  margin: 0;
+  color: var(--teal);
+  font-size: 0.9rem;
+  line-height: 1.35;
+}
+
+.guide-block p {
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.75;
+}
+
+.detail-source-notes {
+  margin-top: 22px;
+}
+
+.detail-section-heading {
+  display: grid;
+  gap: 2px;
+}
 .detail-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -505,7 +573,8 @@ h1 {
     grid-template-columns: 1fr;
   }
 
-  .detail-grid {
+  .detail-grid,
+  .guide-grid {
     grid-template-columns: 1fr;
   }
 }

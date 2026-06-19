@@ -14,6 +14,12 @@ const requiredStringFields = [
   "solution",
   "achievements",
   "limitations",
+  "insight_headline",
+  "insight_lead",
+  "insight_shift",
+  "insight_mechanism",
+  "insight_legacy",
+  "insight_caveat",
   "pdf_link"
 ];
 

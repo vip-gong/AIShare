@@ -102,6 +102,7 @@
   }
 
   function renderPaperPage(paper) {
+    const insight = buildPaperInsight(paper);
     els.controls.hidden = true;
     els.timelineView.hidden = true;
     els.paperPage.hidden = false;
@@ -114,14 +115,21 @@
           <p class="detail-en-title">${escapeHtml(paper.title_en)}</p>
           <p class="detail-authors">${escapeHtml(compactAuthors(paper.authors, 6))}</p>
         </header>
-        <dl class="detail-grid">
-          ${renderDetailSection("研究背景", paper.background)}
-          ${renderDetailSection("核心问题", paper.problem)}
-          ${renderDetailSection("之前局限", paper.previous_limitations)}
-          ${renderDetailSection("解决方案", paper.solution)}
-          ${renderDetailSection("主要成就", paper.achievements)}
-          ${renderDetailSection("局限性", paper.limitations)}
-        </dl>
+        ${renderReaderGuide(insight)}
+        <section class="detail-source-notes" aria-labelledby="sourceNotesTitle">
+          <div class="detail-section-heading">
+            <p>原始要点</p>
+            <h3 id="sourceNotesTitle">论文信息拆解</h3>
+          </div>
+          <dl class="detail-grid">
+            ${renderDetailSection("研究背景", paper.background)}
+            ${renderDetailSection("核心问题", paper.problem)}
+            ${renderDetailSection("之前局限", paper.previous_limitations)}
+            ${renderDetailSection("解决方案", paper.solution)}
+            ${renderDetailSection("主要成就", paper.achievements)}
+            ${renderDetailSection("局限性", paper.limitations)}
+          </dl>
+        </section>
         <div class="paper-links">
           ${paper.arxiv_link ? `<a href="${escapeAttribute(paper.arxiv_link)}" target="_blank" rel="noopener noreferrer">arXiv</a>` : ""}
           ${paper.pdf_link ? `<a href="${escapeAttribute(paper.pdf_link)}" target="_blank" rel="noopener noreferrer">PDF</a>` : ""}
@@ -129,6 +137,33 @@
       </article>
     `;
     window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  function renderReaderGuide(insight) {
+    return `
+      <section class="reader-guide" aria-labelledby="readerGuideTitle">
+        <div class="reader-guide-lead">
+          <p class="guide-label">读者导读</p>
+          <h3 id="readerGuideTitle">${escapeHtml(insight.headline)}</h3>
+          <p>${escapeHtml(insight.lead)}</p>
+        </div>
+        <div class="guide-grid">
+          ${renderGuideBlock("真正的转折", insight.shift)}
+          ${renderGuideBlock("怎么读懂技术", insight.mechanism)}
+          ${renderGuideBlock("留下的路线", insight.legacy)}
+          ${renderGuideBlock("别误解", insight.caveat)}
+        </div>
+      </section>
+    `;
+  }
+
+  function renderGuideBlock(label, value) {
+    return `
+      <section class="guide-block">
+        <h4>${escapeHtml(label)}</h4>
+        <p>${escapeHtml(value)}</p>
+      </section>
+    `;
   }
 
   function renderDetailSection(label, value) {
@@ -140,6 +175,63 @@
     `;
   }
 
+  function buildPaperInsight(paper) {
+    const era = getEra(paper);
+    const lens = getCategoryLens(paper.category);
+    const eraText = era ? `它位于「${era.title}」阶段，也就是 ${era.label} 这段技术脉络里。` : "";
+    const problem = paper.problem || "这篇论文试图解决当时路线里最难绕开的核心问题。";
+    const previous = paper.previous_limitations || "在它之前，相关方法还缺少稳定、可扩展或可迁移的解法。";
+    const solution = paper.solution || "它给出了一套新的建模、训练或系统实现方式。";
+    const achievements = paper.achievements || "它影响了后续一批研究和工程实践。";
+    const limitations = paper.limitations || "它也留下了新的边界条件和后续问题。";
+
+    return {
+      headline: paper.insight_headline || `如果只记住一句话：${lens.short}`,
+      lead: paper.insight_lead || `${eraText}这篇值得读，不只是因为它提出了一个方法，而是因为它把「${problem}」这类问题推进成了后来可以反复复用的能力组件。普通读者先抓住它解决了哪类瓶颈，再看公式、实验和模型细节，会更容易读出价值。`,
+      shift: paper.insight_shift || `在它之前，主要卡点是：${previous} 这篇的真正转折，是把这个卡点从“经验上难处理”变成了可以训练、评估、复现和继续放大的技术对象。`,
+      mechanism: paper.insight_mechanism || `技术抓手是：${solution} 读的时候不必一开始就陷入术语，先问三个问题：它让信息怎么流动、让模型优化什么目标、又引入了什么新的结构约束。`,
+      legacy: paper.insight_legacy || `${achievements} 从 AGI 路线看，它贡献的是「${lens.contribution}」这块积木，后续很多系统不是照搬论文细节，而是继承了这个方向上的判断。`,
+      caveat: paper.insight_caveat || `${limitations} 所以读经典时不要把它当成终点；更好的读法是看它打开了哪条路线，以及后来哪些工作继续补上这些边界。`
+    };
+  }
+
+  function getCategoryLens(key) {
+    const lenses = {
+      language: {
+        short: "它让语言能力从手工规则或浅层统计，转向可规模化的表示学习与预训练路线。",
+        contribution: "语言表示和语言能力规模化"
+      },
+      vision: {
+        short: "它让视觉系统少依赖手工特征，多依赖可学习的表示、数据规模和架构设计。",
+        contribution: "视觉表征与生成能力"
+      },
+      multimodal: {
+        short: "它把不同模态从事后拼接推进到共享表示、统一接口或原生多模态模型。",
+        contribution: "跨模态理解与生成"
+      },
+      rl: {
+        short: "它把智能体从静态预测推向通过反馈、奖励和环境交互来学习策略。",
+        contribution: "反馈驱动的决策能力"
+      },
+      infra: {
+        short: "它让模型能力不只来自算法想法，也来自数据、训练、系统和效率的工程化放大。",
+        contribution: "规模化训练与系统效率"
+      },
+      agent: {
+        short: "它让模型从回答问题进一步走向分解任务、调用工具和组织行动。",
+        contribution: "工具使用与任务执行"
+      },
+      method: {
+        short: "它提供了后来许多模型都会复用的基础方法，把模糊经验变成可训练的通用机制。",
+        contribution: "通用训练机制和方法论"
+      },
+      science: {
+        short: "它把 AI 从互联网任务推向科学发现，让模型开始介入真实世界的复杂结构问题。",
+        contribution: "AI for Science 的问题求解能力"
+      }
+    };
+    return lenses[key] || lenses.method;
+  }
   function renderFilters() {
     const counts = papers.reduce((acc, paper) => {
       acc[paper.category] = (acc[paper.category] || 0) + 1;
