@@ -500,14 +500,15 @@ h1 {
 .guide-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0 24px;
-  border-top: 1px solid var(--line-soft);
+  gap: 14px;
 }
 
 .guide-block {
   min-width: 0;
-  padding: 16px 0;
-  border-bottom: 1px solid var(--line-soft);
+  border: 1px solid var(--line-soft);
+  border-radius: 8px;
+  padding: 14px;
+  background: rgba(16, 20, 18, 0.34);
 }
 
 .guide-block h4 {
