@@ -23,6 +23,21 @@ const requiredStringFields = [
   "pdf_link"
 ];
 
+// category 枚举与其对应的中文 topic 标签，必须与 src/app.js 中的 CATEGORIES 保持一致。
+const CATEGORY_LABELS = {
+  language: "语言模型",
+  vision: "视觉与生成",
+  multimodal: "多模态",
+  rl: "强化学习",
+  infra: "数据与系统",
+  agent: "Agent",
+  method: "方法与理论",
+  science: "科学智能"
+};
+
+// 年份上限随当前年份滚动（允许提前一年的预印本），不再硬编码。
+const MAX_YEAR = new Date().getFullYear() + 1;
+
 const errors = [];
 
 if (!Array.isArray(data.papers)) {
@@ -48,8 +63,22 @@ if (!Array.isArray(data.papers)) {
       errors.push(`${label}.pdf_link must be http(s)`);
     }
 
-    if (!Number.isInteger(paper.year) || paper.year < 1900 || paper.year > 2026) {
-      errors.push(`${label}.year must be an integer between 1900 and 2026`);
+    if (!Number.isInteger(paper.year) || paper.year < 1900 || paper.year > MAX_YEAR) {
+      errors.push(`${label}.year must be an integer between 1900 and ${MAX_YEAR}`);
+    }
+
+    if (typeof paper.category !== "string" || !CATEGORY_LABELS[paper.category]) {
+      errors.push(`${label}.category must be one of: ${Object.keys(CATEGORY_LABELS).join(", ")}`);
+    } else if (typeof paper.topic === "string" && paper.topic.trim() !== "" && paper.topic !== CATEGORY_LABELS[paper.category]) {
+      errors.push(`${label}.topic ("${paper.topic}") must match category label "${CATEGORY_LABELS[paper.category]}"`);
+    }
+
+    if (paper.doi && typeof paper.doi !== "string") {
+      errors.push(`${label}.doi must be a string when present`);
+    }
+
+    if (paper.venue && typeof paper.venue !== "string") {
+      errors.push(`${label}.venue must be a string when present`);
     }
 
     if (!Array.isArray(paper.authors) || paper.authors.length === 0 || paper.authors.some((author) => typeof author !== "string" || author.trim() === "")) {
@@ -73,8 +102,14 @@ const papers = data.papers;
 const years = papers.map((paper) => paper.year);
 const missingArxiv = papers.filter((paper) => !paper.arxiv_link).length;
 
+const categoryCounts = papers.reduce((acc, paper) => {
+  acc[paper.category] = (acc[paper.category] || 0) + 1;
+  return acc;
+}, {});
+
 console.log(`Validated ${papers.length} papers (${Math.min(...years)}-${Math.max(...years)}).`);
 console.log(`Optional arXiv links missing: ${missingArxiv}.`);
+console.log(`Categories: ${Object.entries(categoryCounts).map(([k, v]) => `${k}=${v}`).join(", ")}.`);
 
 function checkDuplicate(set, value, fieldLabel) {
   if (set.has(value)) {

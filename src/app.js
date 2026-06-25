@@ -20,7 +20,7 @@
     { id: "transformer", label: "2015-2019", title: "架构革命", start: 2015, end: 2019, note: "残差、注意力、预训练与强化学习形成主线。" },
     { id: "foundation", label: "2020-2022", title: "基础模型成型", start: 2020, end: 2022, note: "规模化、多模态、扩散、科学智能和对齐方法走向成熟。" },
     { id: "open", label: "2023-2024", title: "开源与架构探索", start: 2023, end: 2024, note: "开放模型、多模态助手、长上下文、MoE与新型连接结构快速落地。" },
-    { id: "efficiency", label: "2025-2026", title: "推理与效率工程", start: 2025, end: 2026, note: "推理强化学习、训练优化器、残差连接、注意力缓存和系统效率成为主线。" }
+    { id: "efficiency", label: "2025 至今", title: "推理与效率工程", start: 2025, end: 9999, note: "推理强化学习、训练优化器、残差连接、注意力缓存和系统效率成为主线。" }
   ];
 
   const state = {
