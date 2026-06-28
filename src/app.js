@@ -119,7 +119,7 @@
         ${renderReaderGuide(insight)}
         <section class="detail-source-notes" aria-labelledby="sourceNotesTitle">
           <div class="detail-section-heading">
-            <p>原始要点</p>
+            <p>原文要点</p>
             <h3 id="sourceNotesTitle">论文信息拆解</h3>
           </div>
           <dl class="detail-grid">
